@@ -1,17 +1,16 @@
-import { version } from '../../package.json';
-import { Router } from 'express';
-import facets from './facets';
+import { Router } from 'express'
+import asyncRequest from '../utils'
+import rectangleHandler from './rectangle'
 
 export default ({ config, db }) => {
-	let api = Router();
-
-	// mount the facets resource
-	api.use('/facets', facets({ config, db }));
+	let api = Router()
 
 	// perhaps expose some API metadata at the root
 	api.get('/', (req, res) => {
-		res.json({ version });
-	});
+		res.status(200)
+	})
 
-	return api;
+	api.get('/rectangle', asyncRequest(rectangleHandler))
+
+	return api
 }
