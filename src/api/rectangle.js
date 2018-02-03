@@ -1,13 +1,22 @@
+import cv from 'opencv4nodejs'
+
+const GAUSSIAN_SIZE = new cv.Size(3, 3)
+
 const rectangleHandler = async (req, res) => {
+  const img = await cv.imreadAsync(`${__dirname}/example.jpg`)
+  let gray = await img.cvtColorAsync (cv.COLOR_BGR2HLS)
+  gray = await gray.gaussianBlurAsync(GAUSSIAN_SIZE, 0)
+  const edged = await gray.cannyAsync(10, 250)
 
   res.send({
-    hourra: 'youpi'
+    edged
   })
 }
 
 export default rectangleHandler
 
 /*
+https://pythontips.com/2015/03/11/a-guide-to-finding-books-in-images-using-python-and-opencv/
 # load the image, convert it to grayscale, and blur it
 image = cv2.imread("example.jpg")
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
