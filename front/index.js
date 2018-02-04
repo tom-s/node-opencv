@@ -11,7 +11,7 @@ const BACK_URL = 'http://localhost:8080'
 const JPG_QUALITY = 0.6
 const CANVAS_WIDTH = 640
 const CANVAS_HEIGHT = 480
-const FRAMES_X = 200 // calculate every x frames
+const FRAMES_X = 10 // calculate every x frames
 const CONSTRAINTS = {
   audio: false,
   video: true,
@@ -39,18 +39,19 @@ window.addEventListener('load', () => {
       .catch(handleError)
   })
 
-  socket.on('contours', ({ total, contours }) => {
-    contours.sort(sortContours).forEach(contour => {
-      console.log("contour", contour)
-      /*
-      ctx.rect(
-        contour[0].x,
-        contour[0].,
-        150,
-        100
-      );*/
+  socket.on('contours', ({ total, contours: rectangles }) => {
+    rectangles.forEach(rectangle => {
+      rectangle.forEach(contour => {
+        rectangle.forEach(contour2 => {
+          ctx.beginPath()
+          ctx.moveTo(contour.x,contour.y)
+          ctx.lineTo(contour2.x,contour2.y)
+          ctx.lineWidth = 3
+          ctx.strokeStyle = '#ff0000'
+          ctx.stroke()
+        })
+      })
     })
-    ctx.stroke()
   })
 })
 
