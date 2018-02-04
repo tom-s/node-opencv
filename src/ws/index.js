@@ -28,12 +28,12 @@ const initializeSocket = server => {
       const contours = await closed.findContoursAsync(cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 
        // Write result image
-      await cv.imwriteAsync(FILE_PATH, gray)
+      await cv.imwriteAsync(FILE_PATH, closed)
 
       // Find rectangles
       const result = contours.reduce((memo, contour) => {
         const peri = contour.arcLength(true)
-        const approx = contour.approxPolyDP(0.02 * peri, true)
+        const approx = contour.approxPolyDP(0.01 * peri, true)
         return approx.length === 4
           ? {
             total: memo.total + 1,

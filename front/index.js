@@ -11,7 +11,7 @@ const BACK_URL = 'http://localhost:8080'
 const JPG_QUALITY = 0.6
 const CANVAS_WIDTH = 640
 const CANVAS_HEIGHT = 480
-const FRAMES_X = 250 // calculate every x frames
+const FRAMES_X = 100 // calculate every x frames
 const CONSTRAINTS = {
   audio: false,
   video: true,
@@ -61,7 +61,7 @@ const tick = () => {
   if (ticks % FRAMES_X !== 0) return
   console.log("tick")
 
- 	// Draw video to canvas (avoidable ?)
+ 	// Draw video to canvas
   ctx.drawImage(video, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
 
   // Emit image
