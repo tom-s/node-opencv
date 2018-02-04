@@ -11,7 +11,7 @@ const BACK_URL = 'http://localhost:8080'
 const JPG_QUALITY = 0.6
 const CANVAS_WIDTH = 640
 const CANVAS_HEIGHT = 480
-const FRAMES_X = 10 // calculate every x frames
+const FRAMES_X = 50 // calculate every x frames
 const CONSTRAINTS = {
   audio: false,
   video: true,
@@ -39,6 +39,7 @@ window.addEventListener('load', () => {
       .catch(handleError)
   })
 
+  // Detections
   socket.on('rectangle_detection', ({ total, contours: rectangles }) => {
     rectangles.forEach(rectangle => {
       rectangle.forEach(contour => {
@@ -52,6 +53,16 @@ window.addEventListener('load', () => {
         })
       })
     })
+  })
+
+  socket.on('feature_detection', (data) => {
+    /*
+    data.bestMatches.forEach(match => {
+      const x = data.keyPoints1[match.queryIdx].point.x
+      const y = data.keyPoints1[match.queryIdx].point.y
+      ctx.fillStyle = '#0000ff'
+      ctx.fillRect( x, y, 5, 5 )
+    })*/
   })
 })
 

@@ -2,9 +2,9 @@ import io from 'socket.io'
 import cv from 'opencv4nodejs'
 import fs from 'async-file'
 import detectRectangles from './rectangleDetection'
+import detectFeatures from './featureMatching'
 
 const FILE_PATH = `${__dirname}/canvas.jpg`
-
 
 const initializeSocket = server => {
   const ws = io(server)
@@ -20,12 +20,12 @@ const initializeSocket = server => {
       // Read with openCV
       const img = await cv.imreadAsync(FILE_PATH)
 
-      // Perform different detections
+      // Perform different detections types
       const rectangleDetection = await detectRectangles(img)
-      const featureDetection = await detectRectangles(img)
+      const featureDetection = await detectFeatures(img)
 
       client.emit('rectangle_detection', rectangleDetection)
-      client.emit('feature_detection', featureDetection)
+      //client.emit('feature_detection', featureDetection)
     })
   })
 }
