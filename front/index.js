@@ -11,7 +11,7 @@ const BACK_URL = 'http://localhost:8080'
 const JPG_QUALITY = 0.6
 const CANVAS_WIDTH = 640
 const CANVAS_HEIGHT = 480
-const FRAMES_X = 10 // calculate every x frames
+const FRAMES_X = 250 // calculate every x frames
 const CONSTRAINTS = {
   audio: false,
   video: true,

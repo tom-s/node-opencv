@@ -7,15 +7,16 @@ import cv from 'opencv4nodejs'
 const GAUSSIAN_SIZE = new cv.Size(3, 3)
 const KERNEL_SIZE = new cv.Size(7, 7)
 const CONTOUR_COLOR = new cv.Vec(0, 255, 0)
+const KERNEL = cv.getStructuringElement(cv.MORPH_RECT, KERNEL_SIZE)
+const BG_SUB = new cv.BackgroundSubtractorKNN()
 
 const rectangleHandler = async (req, res) => {
   console.time('start')
   const img = await cv.imreadAsync(`${__dirname}/example.jpg`)
-  let gray = await img.bgrToGray()
+  let gray = await img.cvtColor(cv.COLOR_BGR2GRAY )
   gray = await gray.gaussianBlurAsync(GAUSSIAN_SIZE, 0)
   const edged = await gray.cannyAsync(10, 250)
-  const kernel = cv.getStructuringElement(cv.MORPH_RECT, KERNEL_SIZE)
-  const closed = await edged.morphologyExAsync(kernel, cv.MORPH_CLOSE)
+  const closed = await edged.morphologyExAsync(KERNEL, cv.MORPH_CLOSE)
   const contours = await closed.copy().findContoursAsync(cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 
   const result = contours.reduce((memo, contour) => {

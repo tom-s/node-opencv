@@ -6,6 +6,7 @@ const FILE_PATH = `${__dirname}/canvas.jpg`
 const GAUSSIAN_SIZE = new cv.Size(3, 3)
 const KERNEL_SIZE = new cv.Size(7, 7)
 const CONTOUR_COLOR = new cv.Vec(0, 255, 0)
+const KERNEL = cv.getStructuringElement(cv.MORPH_RECT, KERNEL_SIZE)
 
 const initializeSocket = server => {
   const ws = io(server)
@@ -20,12 +21,14 @@ const initializeSocket = server => {
 
       // Manipulate with openCV
       const img = await cv.imreadAsync(FILE_PATH)
-      let gray = await img.bgrToGray()
-      gray = await gray.gaussianBlurAsync(GAUSSIAN_SIZE, 0)
+      let gray = await img.cvtColorAsync(cv.COLOR_BGR2GRAY )
+      gray = gray.gaussianBlur(GAUSSIAN_SIZE, 0)
       const edged = await gray.cannyAsync(10, 250)
-      const kernel = cv.getStructuringElement(cv.MORPH_RECT, KERNEL_SIZE)
-      const closed = await edged.morphologyExAsync(kernel, cv.MORPH_CLOSE)
+      const closed = await edged.morphologyExAsync(KERNEL, cv.MORPH_CLOSE)
       const contours = await closed.findContoursAsync(cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+
+       // Write result image
+      await cv.imwriteAsync(FILE_PATH, gray)
 
       // Find rectangles
       const result = contours.reduce((memo, contour) => {
