@@ -56,13 +56,15 @@ window.addEventListener('load', () => {
   })
 
   socket.on('feature_detection', (data) => {
-    /*
     data.bestMatches.forEach(match => {
-      const x = data.keyPoints1[match.queryIdx].point.x
-      const y = data.keyPoints1[match.queryIdx].point.y
+      const x = data.keyPoints1[match[0].queryIdx].point.x
+      const y = data.keyPoints1[match[0].queryIdx].point.y
       ctx.fillStyle = '#0000ff'
       ctx.fillRect( x, y, 5, 5 )
-    })*/
+    })
+    if(data.bestMatches.length > 3) {
+      console.log("this is page 133 ! of francais 5e")
+    }
   })
 })
 
@@ -70,7 +72,6 @@ const tick = () => {
   ticks++
   window.requestAnimationFrame(tick)
   if (ticks % FRAMES_X !== 0) return
-  console.log("tick")
 
  	// Draw video to canvas
   ctx.drawImage(video, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
