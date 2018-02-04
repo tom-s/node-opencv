@@ -52,8 +52,8 @@ const detect = async(img) => {
   const orbMatchesImg = matchFeatures({
     img1: img,
     img2: targetMat,
-    detector: new cv.ORBDetector(),
-    matchFunc: cv.matchBruteForceHamming
+    detector: new cv.SIFTDetector({ nFeatures: 50 }),
+    matchFunc: cv.matchFlannBased
   })
 
   // Write result image
