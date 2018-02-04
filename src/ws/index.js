@@ -17,6 +17,8 @@ const initializeSocket = server => {
       // Write file on disk
       const fileData = data.split(';base64,').pop()
       await fs.writeFile(FILE_PATH, fileData, {encoding: 'base64'})
+
+      // Manipulate with openCV
       const img = await cv.imreadAsync(FILE_PATH)
       let gray = await img.bgrToGray()
       gray = await gray.gaussianBlurAsync(GAUSSIAN_SIZE, 0)
@@ -25,6 +27,7 @@ const initializeSocket = server => {
       const closed = await edged.morphologyExAsync(kernel, cv.MORPH_CLOSE)
       const contours = await closed.findContoursAsync(cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 
+      // Find rectangles
       const result = contours.reduce((memo, contour) => {
         const peri = contour.arcLength(true)
         const approx = contour.approxPolyDP(0.02 * peri, true)
