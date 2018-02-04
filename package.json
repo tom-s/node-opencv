@@ -28,6 +28,7 @@
   "author": "Jason Miller <jason@developit.ca>",
   "license": "MIT",
   "dependencies": {
+    "async-file": "^2.0.2",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
     "body-parser": "^1.13.3",

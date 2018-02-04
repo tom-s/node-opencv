@@ -11,7 +11,7 @@ const BACK_URL = 'http://localhost:8080'
 const JPG_QUALITY = 0.6
 const CANVAS_WIDTH = 640
 const CANVAS_HEIGHT = 480
-const FRAMES_X = 150 // calculate every x frames
+const FRAMES_X = 200 // calculate every x frames
 const CONSTRAINTS = {
   audio: false,
   video: true,
@@ -20,8 +20,12 @@ const CONSTRAINTS = {
   }]
 }
 
-// Init
+const sortContours = (a, b) => {
+  if (a.y == b.y) return a.x - b.x
+  return a.y - b.y
+}
 
+// Init
 window.addEventListener('load', () => {
   // Connect Web Socket
   socket = io.connect(BACK_URL)
@@ -33,6 +37,20 @@ window.addEventListener('load', () => {
       .getUserMedia(CONSTRAINTS)
       .then(handleSuccess)
       .catch(handleError)
+  })
+
+  socket.on('contours', ({ total, contours }) => {
+    contours.sort(sortContours).forEach(contour => {
+      console.log("contour", contour)
+      /*
+      ctx.rect(
+        contour[0].x,
+        contour[0].,
+        150,
+        100
+      );*/
+    })
+    ctx.stroke()
   })
 })
 
@@ -57,7 +75,6 @@ const handleSuccess = (stream) => {
   ctx = canvas.getContext('2d')
   canvas.width = CANVAS_WIDTH
   canvas.height = CANVAS_HEIGHT
-  window.stream = stream; // make stream available to browser console
   video.srcObject = stream
   window.requestAnimationFrame(tick)
 }
