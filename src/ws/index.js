@@ -25,14 +25,10 @@ const initializeSocket = server => {
       const rectangleDetection = await detectRectangles(img)
       client.emit('rectangle_detection', rectangleDetection)
 
+       /*
       const featureDetection = await detectFeatures(img)
       client.emit('feature_detection', featureDetection)
-
-      /*
       const tensorDetection = await detectTensor(img)
-
-
-
       client.emit('tensor_detection', tensorDetection)
       */
     })

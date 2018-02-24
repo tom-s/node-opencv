@@ -27,8 +27,9 @@ module.exports = {
     }),
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
-      title: 'Production'
-    })
+      inject: 'body',
+      template: 'index.html'
+    }),
   ],
   output: {
     filename: '[name].bundle.js',
